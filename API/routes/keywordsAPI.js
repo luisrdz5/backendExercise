@@ -6,8 +6,8 @@ function keywordsApi(app) {
     const router = express.Router();
     app.use('/api', router);
 
-    router.post('/', async function(req, res, next) {
-        
+    router.get('/', async function(req, res, next) {
+        res.send(`API auth v 0.01`);
     });
 }
 

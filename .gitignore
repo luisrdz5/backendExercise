@@ -148,4 +148,3 @@ $RECYCLE.BIN/
 
 .env
 .nyc_output
-docker-compose.yml
