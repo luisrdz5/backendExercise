@@ -17,7 +17,15 @@ In case of a keyword match, the tweet will be sent to a RabbitMQ queue, which wi
 
 ## HOW IT WORKS
 
-The aplication has 5 container to make an scalable infrastructure and there works in that way 
+The aplication has 5 containers:
+
+- Tracker: This container get information from twitter and send it to rabbitmq 
+- RabbitMQ: Is a Message broker 
+- Worker: This container read the information from the message broker and put them into redis 
+- Redis: It's an in-memory data structure store, used as a database
+- API: This container create an API to consume the tweets 
+
+This is to make an scalable infrastructure and there works in that way 
 
 ![](images/flow.png)
 
@@ -35,6 +43,7 @@ https://docs.docker.com/get-docker/
 #### Environment Variables
 
 ```
+PORT=<port of the API>
 NODE_ENV=development | production
 API_KEY_TWITTER
 API_SECRET_KEY_TWITTER
@@ -66,7 +75,7 @@ docker-compose up
 you can test if the system its running open the api endpont.
 
 ```
-http://<your ip>/api/
+http://<your ip>:port/api/
 ```
 
 
