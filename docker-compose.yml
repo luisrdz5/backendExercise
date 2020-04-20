@@ -42,6 +42,7 @@ services:
     depends_on:
       - rabbitmq
       - redis
+      - dispatcher
     volumes:
       - ./tracker:/var/www
     working_dir: /var/www
