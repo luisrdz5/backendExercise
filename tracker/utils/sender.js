@@ -7,7 +7,7 @@ const { config } = require('../config/index.js');
 function sendTask(msg){
     amqp.connect(`amqp://${config.rabbitmqUser}:${config.rabbitmqPwd}@${config.rabbitmqServer}`, function(error0, connection) {
         if (error0) {
-            throw error0;
+            console.log(error0);
         }
         connection.createChannel(function(error1, channel) {
             if (error1) {

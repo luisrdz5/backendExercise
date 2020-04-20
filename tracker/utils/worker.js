@@ -7,33 +7,47 @@ const { config } = require('../config/index');
 const redis = require("redis");
 const client = redis.createClient({ host: config.redisServer });
 
-console.log(`amqp://${config.rabbitmqUser}:${config.rabbitmqPwd}@${config.rabbitmqServer}`);
+const worker = () => {
+    try{
+        console.log(`trying to connect to ... amqp://${config.rabbitmqUser}:${config.rabbitmqPwd}@${config.rabbitmqServer}`);
 
-client.on("error", function(error) {
-    console.error(error);
-  });
-
-
-amqp.connect(`amqp://${config.rabbitmqUser}:${config.rabbitmqPwd}@${config.rabbitmqServer}/`, function(error0, connection) {
-    if (error0) {
-        throw error0;
+        client.on("error", function(error) {
+        console.error(error);
+        });
+    
+        amqp.connect(`amqp://${config.rabbitmqUser}:${config.rabbitmqPwd}@${config.rabbitmqServer}/`, function(error0, connection) {
+            if (error0) {
+                console.log(error0);
+                return error0;
+            }
+            connection.createChannel(function(error1, channel) {
+                if (error1) {
+                    throw error1;
+                }
+        
+                channel.assertQueue(config.rabbitmqQueue, {
+                    durable: false
+                });
+        
+                console.log(" [*] Waiting for messages in %s. To exit press CTRL+C", config.rabbitmqQueue);
+        
+                channel.consume(config.rabbitmqQueue, function(msg) {
+                    console.log(" [Worker][x] Received %s", msg.content.toString());
+                    client.set(uuid.v1(), msg.content.toString(), redis.print);
+                }, {
+                    noAck: true
+                });
+            });
+        });
+    }catch (error){
+        console.log(error);
     }
-    connection.createChannel(function(error1, channel) {
-        if (error1) {
-            throw error1;
-        }
 
-        channel.assertQueue(config.rabbitmqQueue, {
-            durable: false
-        });
+}
 
-        console.log(" [*] Waiting for messages in %s. To exit press CTRL+C", config.rabbitmqQueue);
+setTimeout(worker, 10000);
+//setTimeout(worker(),30000);
 
-        channel.consume(config.rabbitmqQueue, function(msg) {
-            console.log(" [Worker][x] Received %s", msg.content.toString());
-            client.set(uuid.v1(), msg.content.toString(), redis.print);
-        }, {
-            noAck: true
-        });
-    });
-});
+ 
+
+

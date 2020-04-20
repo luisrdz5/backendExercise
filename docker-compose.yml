@@ -23,15 +23,10 @@ services:
     volumes:
       - './rabbitmq:/bitnami'
     restart: always
-  waitforrabbit:
-    image: dadarek/wait-for-dependencies
+  dispatcher: 
     depends_on:
       - rabbitmq
       - redis
-    command: tweettracker_rabbitmq_1:5672
-  getter: 
-    depends_on:
-      - waitforrabbit
     build: 
       context: ./tracker
       dockerfile: tracker.dockerfile
@@ -44,8 +39,8 @@ services:
       context: ./tracker
       dockerfile: worker.dockerfile
     depends_on:
-      - waitforrabbit
-      - getter
+      - rabbitmq
+      - redis
     volumes:
       - ./tracker:/var/www
     working_dir: /var/www
@@ -63,7 +58,8 @@ services:
       - TWITTER_PASSWORD=
       - NODE_ENV=dev
     depends_on:
-      - waitforrabbit
+      - rabbitmq
+      - redis
     volumes:
       - ./API:/var/www
     working_dir: /var/www
