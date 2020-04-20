@@ -10,6 +10,7 @@ services:
     volumes:
       - ./redis/data:/data
   rabbitmq:
+    container_name: rabbitmq
     image: 'bitnami/rabbitmq:3.8'
     ports:
       - '4369:4369'
