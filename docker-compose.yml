@@ -45,7 +45,7 @@ services:
     volumes:
       - ./tracker:/var/www
     working_dir: /var/www
-    command: /bin/sh -c "npm install  && node ./utils/worker.js"     
+    command: /bin/sh -c "node ./utils/worker.js"     
   api:
     build:
       context: ./API
