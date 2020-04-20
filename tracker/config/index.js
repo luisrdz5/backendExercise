@@ -11,5 +11,6 @@ const config = {
     rabbitmqPwd: process.env.RABBITMQ_PWD,
     rabbitmqServer: process.env.RABBITMQ_SERVER,
     rabbitmqQueue: process.env.RABBITMQ_QUEUE,
+    redisServer: process.env.REDIS_SERVER,
 }
 module.exports = {config}

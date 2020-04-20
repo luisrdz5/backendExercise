@@ -15,3 +15,19 @@ Make an API REST with the tweets.
 
 The keywords we’re going to listen to, are: platzi, open source and node Twitter API (https://developer.twitter.com/en/docs/tweets/filter-realtime/overview) 
 In case of a keyword match, the tweet will be sent to a RabbitMQ queue, which will be processed and saved to Redis. We will also have a REST API exposing the tweets we have saved.
+
+
+## HOW IT WORKS
+
+We have 5 container to make an scalable infrastructure and there works in that way 
+
+
+
+
+
+
+
+
+
+
+

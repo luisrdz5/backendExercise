@@ -3,6 +3,7 @@ require('dotenv').config();
 const config = {
     dev: process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test',
     port: process.env.PORT || 3000,
+    redisServer: process.env.REDIS_SERVER,
     apiKeyTwitter: process.env.API_KEY_TWITTER,
     apiSecretKeyTwitter: process.env.API_SECRET_KEY_TWITTER,
     accessTokenTwitter: process.env.ACCESS_TOKEN_TWITTER,

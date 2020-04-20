@@ -1,16 +1,16 @@
 const express = require('express');
-const redis = require('redis')  
-const client = redis.createClient() 
-
-
+const redis = require('redis') 
+const { config } = require('../config/index.js'); 
+const client = redis.createClient({ host: config.redisServer });
 
 function keywordsApi(app) {
     const router = express.Router();
     app.use('/api', router);
 
     router.get('/', (req, res, next) => {
-        let return_dataset = [];
 
+        let return_dataset = [];
+        
         client.keys('*', (err, id) => {
             let multi = client.multi()
             let keys = Object.keys(id)

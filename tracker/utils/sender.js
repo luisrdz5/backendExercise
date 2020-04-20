@@ -5,7 +5,7 @@ const amqp = require('amqplib/callback_api');
 const { config } = require('../config/index.js');
 
 function sendTask(msg){
-    amqp.connect(`amqp://${config.rabbitmqUser}:${config.rabbitmqPwd}@${config.rabbitmqServer}/`, function(error0, connection) {
+    amqp.connect(`amqp://${config.rabbitmqUser}:${config.rabbitmqPwd}@${config.rabbitmqServer}`, function(error0, connection) {
         if (error0) {
             throw error0;
         }

@@ -5,12 +5,13 @@ const uuid = require('uuid');
 const amqp = require('amqplib/callback_api');
 const { config } = require('../config/index');
 const redis = require("redis");
-const client = redis.createClient();
+const client = redis.createClient({ host: config.redisServer });
+
+console.log(`amqp://${config.rabbitmqUser}:${config.rabbitmqPwd}@${config.rabbitmqServer}`);
 
 client.on("error", function(error) {
     console.error(error);
   });
-
 
 
 amqp.connect(`amqp://${config.rabbitmqUser}:${config.rabbitmqPwd}@${config.rabbitmqServer}/`, function(error0, connection) {
@@ -29,7 +30,7 @@ amqp.connect(`amqp://${config.rabbitmqUser}:${config.rabbitmqPwd}@${config.rabbi
         console.log(" [*] Waiting for messages in %s. To exit press CTRL+C", config.rabbitmqQueue);
 
         channel.consume(config.rabbitmqQueue, function(msg) {
-            console.log(" [x] Received %s", msg.content.toString());
+            console.log(" [Worker][x] Received %s", msg.content.toString());
             client.set(uuid.v1(), msg.content.toString(), redis.print);
         }, {
             noAck: true

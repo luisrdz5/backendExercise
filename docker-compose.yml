@@ -1,6 +1,55 @@
 version: '2'
 
 services:
+  redis:
+    container_name: redis
+    image: redis
+    command: ["redis-server", "--bind", "redis", "--port", "6379"]
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis/data:/data
+  rabbitmq:
+    image: 'bitnami/rabbitmq:3.8'
+    ports:
+      - '4369:4369'
+      - '5672:5672'
+      - '25672:25672'
+      - '15672:15672'
+    environment:
+      - RABBITMQ_DISK_FREE_LIMIT=1000000000
+    depends_on:
+      - redis
+    volumes:
+      - './rabbitmq:/bitnami'
+    restart: always
+  waitforrabbit:
+    image: dadarek/wait-for-dependencies
+    depends_on:
+      - rabbitmq
+      - redis
+    command: tweettracker_rabbitmq_1:5672
+  getter: 
+    depends_on:
+      - waitforrabbit
+    build: 
+      context: ./tracker
+      dockerfile: tracker.dockerfile
+    volumes:
+      - ./tracker:/var/www
+    working_dir: /var/www
+    command: /bin/sh -c "npm install  && node getinformation.js"
+  worker: 
+    build: 
+      context: ./tracker
+      dockerfile: worker.dockerfile
+    depends_on:
+      - waitforrabbit
+      - getter
+    volumes:
+      - ./tracker:/var/www
+    working_dir: /var/www
+    command: /bin/sh -c "npm install  && node ./utils/worker.js"     
   api:
     build:
       context: ./API
@@ -14,29 +63,9 @@ services:
       - TWITTER_PASSWORD=
       - NODE_ENV=dev
     depends_on:
-      - rabbitmq
-      - redis
+      - waitforrabbit
     volumes:
       - ./API:/var/www
     working_dir: /var/www
-    command: /bin/sh -c "npm install && npm run dev"    
-  rabbitmq:
-    image: 'bitnami/rabbitmq:3.8'
-    ports:
-      - '4369:4369'
-      - '5672:5672'
-      - '25672:25672'
-      - '15672:15672'
-    environment:
-      - RABBITMQ_DISK_FREE_LIMIT=1000000000
-    volumes:
-      - './rabbitmq:/bitnami'
-  redis:
-    container_name: redis
-    image: redis
-    ports:
-      - "6379:6379"
-    volumes:
-      - ./redis/data:/data
-    restart: always
+    command: /bin/sh -c "npm install && npm run start"      
 

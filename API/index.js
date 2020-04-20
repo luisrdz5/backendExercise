@@ -4,9 +4,6 @@ const app = express();
 const { config } = require('./config/index.js');
 const keywordsApi = require('./routes/keywordsAPI');
 
-
-
-
 keywordsApi(app);
 
 app.listen(config.port, function () {
