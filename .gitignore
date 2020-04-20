@@ -148,3 +148,5 @@ $RECYCLE.BIN/
 
 .env
 .nyc_output
+rabbitmq/
+redis/

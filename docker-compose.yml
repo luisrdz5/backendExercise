@@ -12,14 +12,6 @@ services:
       - TWITTER_USER=
       - TWITTER_EMAIL=
       - TWITTER_PASSWORD=
-      - MDB_NAME=platzi-store
-      - MDB_PORT=27017
-      - MDB_HOST=mongo
-      - CDB_NAME=platzi_store
-      - CDB_PORT=8091
-      - CDB_HOST=couchbase
-      - CDB_USER=admin
-      - CDB_PASSWORD=admin123
       - NODE_ENV=dev
     depends_on:
       - rabbitmq
@@ -35,16 +27,16 @@ services:
       - '5672:5672'
       - '25672:25672'
       - '15672:15672'
+    environment:
+      - RABBITMQ_DISK_FREE_LIMIT=1000000000
     volumes:
-      - 'rabbitMQ:/bitnami'
+      - './rabbitmq:/bitnami'
   redis:
     container_name: redis
     image: redis
     ports:
       - "6379:6379"
     volumes:
-      - ../redis/data:/data
+      - ./redis/data:/data
     restart: always
-volumes:
-  rabbitMQ:
-    driver: local
+
