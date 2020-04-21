@@ -72,7 +72,7 @@ after you can start the services with the command:
 docker-compose up
 ```
 
-you can test if the system its running open the api endpont.
+open the api endpont in your navigator.
 
 ```
 http://<your ip>:port/api/
