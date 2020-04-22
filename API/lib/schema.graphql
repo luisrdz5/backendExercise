@@ -1,0 +1,11 @@
+type Tweet {
+    id: ID!
+    data: String!
+}
+
+  type Query {
+    "Devuelve todos los tweets"
+    getTweets: [Tweet]
+    "Devuelve un tweet"
+    getTweet(id: ID!): Tweet
+  }
