@@ -4,7 +4,7 @@ const uuid = require('uuid');
 
 const amqp = require('amqplib/callback_api');
 const { config } = require('../config/index');
-const redis = require("redis");
+const redis = require("ioredis");
 const client = redis.createClient({ host: config.redisServer });
 
 const worker = () => {
@@ -33,7 +33,9 @@ const worker = () => {
         
                 channel.consume(config.rabbitmqQueue, function(msg) {
                     console.log(" [Worker][x] Received %s", msg.content.toString());
-                    client.set(uuid.v1(), msg.content.toString(), redis.print);
+                    //client.set(uuid.v1(), msg.content.toString(), redis.print);
+                    //client.hset('tweets',uuid.v1(),msg.content.toString());
+                    client.rpush('tweets', msg.content.toString());
                 }, {
                     noAck: true
                 });

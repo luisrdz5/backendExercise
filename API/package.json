@@ -30,10 +30,11 @@
     "fs": "0.0.1-security",
     "graphql": "^15.0.0",
     "graphql-tools": "^5.0.0",
+    "ioredis": "^4.16.3",
     "nodemon": "^2.0.3",
     "passport-oauth": "^1.0.0",
     "path": "^0.12.7",
-    "redis": "^3.0.2",
-    "twitter": "^1.7.1"
+    "twitter": "^1.7.1",
+    "uuid": "^7.0.3"
   }
 }
