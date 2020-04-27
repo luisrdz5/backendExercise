@@ -78,6 +78,10 @@ open the api endpont in your navigator.
 http://<your ip>:port/api/
 ```
 
+to test de app you should execute 
+```
+npm run test
+```
 
 
 ## Built With

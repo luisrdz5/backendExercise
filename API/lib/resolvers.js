@@ -2,8 +2,8 @@
 
 const redis = require('ioredis') 
 const { config } = require('../config/index.js'); 
-//const client = new redis({ host: config.redisServer });
-const client = new redis();
+const client = new redis({ host: config.redisServer });
+
 
 module.exports = {
     Query: {
