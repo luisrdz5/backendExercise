@@ -1,6 +1,4 @@
-const tweetMock = {
-    "data": {
-      "getTweets": [
+const tweetMock =  [
         {
           "data": "RT @SipadUfpr: Parabéns pela decisão, @UFU_Oficial https://t.co/eX8jMdxaln"
         },
@@ -310,7 +308,6 @@ const tweetMock = {
         {
           "data": "インポート https://t.co/FktDdLwKqB"
         }
-      ]
-    }
-  }
-  
+      ];
+
+module.exports = tweetMock;
